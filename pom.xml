@@ -3,7 +3,7 @@
     <groupId>com.cloudera</groupId>
     <artifactId>mapdeduce</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Gap Deduce</name>
+    <name>Map Reduce</name>
     <properties>
         <junit.version>4.12</junit.version>
         <slf4j.version>1.7.2</slf4j.version>
