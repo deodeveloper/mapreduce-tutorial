@@ -24,6 +24,7 @@ import cascading.flow.Flow;
 import cascading.flow.FlowConnector;
 import cascading.flow.FlowDef;
 import cascading.flow.hadoop.HadoopFlowConnector;
+import cascading.operation.Debug;
 import cascading.operation.aggregator.Count;
 import cascading.operation.regex.RegexSplitGenerator;
 import cascading.pipe.Each;
@@ -60,11 +61,13 @@ public class WordCount
     RegexSplitGenerator splitter = new RegexSplitGenerator( token, "[ \\[\\]\\(\\),.]" );
     // only returns "token"
     Pipe docPipe = new Each( "token", text, splitter, Fields.RESULTS );
+      docPipe = new Each( docPipe, new Debug("docpipe", true) );
 
     // determine the word counts
     Pipe wcPipe = new Pipe( "wc", docPipe );
     wcPipe = new GroupBy( wcPipe, token );
     wcPipe = new Every( wcPipe, Fields.ALL, new Count(), Fields.ALL );
+      wcPipe = new Each(wcPipe, new Debug("wcpipe", true));
 
     // connect the taps, pipes, etc., into a flow
     FlowDef flowDef = FlowDef.flowDef().setName( "wc" ).addSource( docPipe, docTap ).addTailSink( wcPipe, wcTap );
