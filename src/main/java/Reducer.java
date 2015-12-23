@@ -16,16 +16,26 @@
  * limitations under the License.
  */
 
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.OutputCollector;
+import org.apache.hadoop.mapred.Reporter;
+
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
-import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapred.*;
-import org.apache.hadoop.util.*;
+public class Reducer extends MapReduceBase implements org.apache.hadoop.mapred.Reducer<org.apache.hadoop.io.Text, org.apache.hadoop.io.Text, org.apache.hadoop.io.Text, org.apache.hadoop.io.Text> {
 
-public class Gapper extends MapReduceBase implements Mapper<Text, Text, Text, Text> {
-  public void map(Text attacker, Text victim, OutputCollector<Text, Text> output,
-      Reporter reporter) throws IOException {
-    output.collect(victim, attacker);
+  public void reduce(Text key, Iterator<Text> values, 
+      OutputCollector<Text, Text> output, Reporter reporter) throws IOException {
+    Set<String> attackers = new TreeSet<String>();
+    while (values.hasNext()) {
+      String valStr = values.next().toString();
+      attackers.add(valStr);
+    }
+    output.collect(key, new Text(attackers.toString()));
   }
 }
 

@@ -16,17 +16,20 @@
  * limitations under the License.
  */
 
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.FileInputFormat;
+import org.apache.hadoop.mapred.FileOutputFormat;
+import org.apache.hadoop.mapred.JobClient;
+import org.apache.hadoop.mapred.JobConf;
+import org.apache.hadoop.mapred.KeyValueTextInputFormat;
+import org.apache.hadoop.mapred.TextOutputFormat;
+
 import java.io.IOException;
 
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.conf.*;
-import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapred.*;
-import org.apache.hadoop.util.*;
-
-public class GapDeduceRunner {
+public class MapReduceRunner {
   public static void main(String[] args) throws IOException {
-    JobConf conf = new JobConf(GapDeduceRunner.class);
+    JobConf conf = new JobConf(MapReduceRunner.class);
     conf.setJobName("gapdeduce");
 
     conf.setMapOutputKeyClass(Text.class);
@@ -35,8 +38,8 @@ public class GapDeduceRunner {
     conf.setOutputKeyClass(Text.class);
     conf.setOutputValueClass(Text.class);
 
-    conf.setMapperClass(Gapper.class);
-    conf.setReducerClass(Deducer.class);
+    conf.setMapperClass(Mapper.class);
+    conf.setReducerClass(Reducer.class);
 
     // KeyValueTextInputFormat treats each line as an input record, 
     // and splits the line by the tab character to separate it into key and value 

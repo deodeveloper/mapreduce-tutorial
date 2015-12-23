@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.MapDriver;
-import org.apache.hadoop.mrunit.MapReduceDriver;
 import org.apache.hadoop.mrunit.ReduceDriver;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,8 +32,8 @@ public class TestGapDeduce {
 
   @Before
   public void setUp() {
-    Gapper mapper = new Gapper();
-    Deducer reducer = new Deducer();
+    Mapper mapper = new Mapper();
+    Reducer reducer = new Reducer();
     mapDriver = MapDriver.newMapDriver(mapper);;
     reduceDriver = ReduceDriver.newReduceDriver(reducer);
   }
